@@ -1,0 +1,41 @@
+nav{
+    height: 100%;
+}
+.header .nav-btn {
+    visibility: visible;
+    opacity: 1;
+    margin-top: 10px;
+}
+.header nav{
+    background-color:#808f87;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 15vw;
+    gap:  1.5rem;
+    transition: 0.6s;
+    transform: translateX(-150vh);
+}
+.header .res_nav , .header .nav-close-btn{
+    color: aliceblue;
+    transform: none;
+}
+.container-fluid{
+    margin-bottom: 73vh;
+}
+.navbar-nav{
+    display: flex;
+    text-align: start;
+}
+/* toggle btn icon */
+.nav-btn:hover{
+    animation-name: rotate;
+    animation-duration: 0.5s;
+}
+@keyframes rotate{
+    0%{ transform: rotate(0);}
+    100%{ transform: rotate(360deg);}
+}
+.navbar .nav-item{
+    margin: 20px 0px;
+}
