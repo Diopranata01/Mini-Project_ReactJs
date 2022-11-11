@@ -28,9 +28,9 @@ export const AuthStatus = () => {
                     <div className="col col-md-5 d-flex align-items-center">
                             <span>Welcome, {user.name}!</span>
                             {user.picture?
-                                <Avatar alt="Remy Sharp" src={user.picture} sx={{ marginInlineStart: 2 }} />
+                                <Avatar alt={user.name} src={user.picture} sx={{ marginInlineStart: 2 }} />
                                 : 
-                                <Avatar alt="Remy Sharp" src='' sx={{ marginInlineStart: 2 }} />
+                                <Avatar alt={user.name} src='' sx={{ marginInlineStart: 2 }} />
                                 
                             }
                             <LogoutButton />

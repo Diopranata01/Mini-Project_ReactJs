@@ -52,7 +52,11 @@ export const MainBlogPage = () => {
     <>
       <div style={{ margin: "0px" }} className="row d-flex">
         <AuthStatus />
-        <IniNavbar />
+        <div className="container d-flex row" style={{ paddingInlineStart: 50 }}>
+          <div className="col">
+            <IniNavbar/>
+          </div>
+        </div>
         <div className="container pt-3 justify-content-center">
           <div className="row justify-content-center py-3 row-cols-md-4">
             <div className="col-md-3 ms-5" style={{ paddingLeft: "70px" }}>

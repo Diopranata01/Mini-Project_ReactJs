@@ -27,6 +27,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import { ExpandMore } from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CardMedia from "@mui/material/CardMedia";
+import Swal from "sweetalert2";
 
 export const BlogPost = ({ blogPost }) => {
   // set post published
@@ -34,6 +35,7 @@ export const BlogPost = ({ blogPost }) => {
   const [setSoftDeletedPost] = useMutation(SOFT_DELETE_BLOG_POST);
   const [setActive, setNewActive] = useState({ active: true });
   const [setDelete, setNewDelete] = useState({ active: false });
+  const [setLike, setNewLike] = useState({ active: false });
 
   const onSetPublish = async (e, data) => {
     e.preventDefault();
@@ -48,12 +50,25 @@ export const BlogPost = ({ blogPost }) => {
       ...setActive,
       active: false,
     });
-    // console.log(blogPost.id)
+
   };
 
   const onSetDelete = async (e) => {
     e.preventDefault();
 
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
     setSoftDeletedPost({
       variables: {
         id: blogPost.id,
@@ -66,9 +81,18 @@ export const BlogPost = ({ blogPost }) => {
     });
   };
 
+  const onSetLike = async (e) => {
+    e.preventDefault();
+
+    setNewLike({
+      ...setLike,
+      active: true,
+    });
+  };
+
   const today = moment(new Date());
 
-  console.log(blogPost.id);
+  // console.log(blogPost)
 
   let postedBy = "";
   if (blogPost.user?.name) postedBy = "by " + blogPost.user?.name;
@@ -119,7 +143,7 @@ export const BlogPost = ({ blogPost }) => {
           ))} */}
       </CardContent>
       <CardActions disableSpacing>
-        {blogPost.is_published ? (
+        {blogPost.is_published || blogPost.activities.type==='deleted'? (
           <div>
             {setActive.active ? (
               <div>
@@ -135,8 +159,12 @@ export const BlogPost = ({ blogPost }) => {
                   </div>
                 ) : (
                   <div>
-                    <IconButton aria-label="add to favorites" className="ms-1">
-                      <FavoriteIcon color="error" />
+                    <IconButton
+                      aria-label="add to favorites"
+                      className="ms-1"
+                      onClick={(e) => onSetLike(e)}
+                    >
+                      <FavoriteIcon color={setLike.active ? "error" : ""} />
                     </IconButton>
                     <IconButton color="error" onClick={(e) => onSetDelete(e)}>
                       <DeleteIcon />
@@ -195,70 +223,13 @@ export const BlogPost = ({ blogPost }) => {
             )}
           </div>
         )}
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites" color="info">
           <ShareIcon />
         </IconButton>
         <ExpandMore>
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
-
-      {/* <div>
-        {blogPost.is_published ? (
-          <div>
-            {setActive.active ? (
-              <IconButton
-                color="error"
-                onClick={(e) => onSetDelete(e)}
-              >
-                <DeleteIcon/>
-              </IconButton>
-            ) : (
-              <div>
-                <LoadingButton loading variant="contained" className="btn btn-primary border border-0 rounded-2">
-                  Submit
-                </LoadingButton>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div>
-            {setActive.active ? (
-              <div className="col-12 d-flex">
-                <Button
-                  className={
-                    setActive
-                      ? "btn rounded-2 load loading active-loading"
-                      : "" 
-                  }
-                  variant="outlined"
-                  color="error"
-                  onClick={(e) => onSetPublish(e, true)}
-                >
-                  Published
-                </Button>
-                <IconButton
-                  className="ms-2"
-                  variant="outlined"
-                  color="error"
-                  onClick={(e) => onSetDelete(e)}
-                >
-                  <DeleteIcon/>
-                </IconButton>
-                <div className="ms-1">
-                  <EditPage data={blogPost.id}/>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <LoadingButton loading variant="outlined">
-                  Submit
-                </LoadingButton>
-              </div>
-            )}
-          </div>
-        )}
-      </div> */}
     </Card>
   );
 };

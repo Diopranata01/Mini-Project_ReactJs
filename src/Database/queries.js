@@ -74,7 +74,7 @@ export const GET_DELETED_BLOG_POSTS_BY = gql`
 
 export const DISPLAY_SOFTDELETED_POST = gql`
 query GetDeletedPost {
-  user_post(order_by: {date: desc}, where: {activities: {type: {_eq: deleted}}, is_published: {_eq: true}}) {
+  user_post(order_by: {date: desc}, where: {activities: {type: {_eq: deleted}}}) {
     id
     date
     title
